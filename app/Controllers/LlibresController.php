@@ -58,6 +58,7 @@ class LlibresController extends BaseController
         $crud->setColumnsInfo([
             'id' => ['name' => 'codi', 'type' => KpaCrud::TEXTAREA_FIELD_TYPE, 'html_atts' => ["required"],],
             'titol' => ['name' => 'titol', 'type' => KpaCrud::TEXTAREA_FIELD_TYPE, 'html_atts' => ["required"],],
+            'sinopsis' => ['name' => 'sinopsis', 'type' => KpaCrud::TEXTAREA_FIELD_TYPE, 'html_atts' => [],],
             'autor' => ['name' => 'autor', 'type' => KpaCrud::TEXTAREA_FIELD_TYPE, 'html_atts' => ["required"],],
             'spicy' => ['name' => 'spicy', 'type' => KpaCrud::NUMBER_FIELD_TYPE, 'html_atts' => ["required", 'max=5'],],
             'ISBN' => ['name' => 'ISBN', 'type' => KpaCrud::TEXTAREA_FIELD_TYPE, 'html_atts' => ["required"],],

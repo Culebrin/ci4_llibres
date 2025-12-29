@@ -17,6 +17,10 @@ class LlibresMigration extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 255,
             ],
+            'sinopsis' => [
+                'type'          => 'TEXT',
+                'null'          => true,
+            ],
             'imagen' => [
                 'type'          => 'VARCHAR',
                 'constraint'    => '255',

@@ -1,46 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style/home.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <title>Mi Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <title>Mi Biblioteca - Colección Personal</title>
 </head>
 
 <body>
-    <header class="w3-center">
-        <h1>📚 Mi Biblioteca</h1>
-        <nav>
-            <!-- TODO: Implementacion temporal, terminar de ver como hacer que filtre y por que campos -->
-            <input type="text" placeholder="Buscar por nombre...">
-            <button type="submit">Buscar</button>
-            <ul>
-                <li><a href="/admin">Administrar Libros</a></li>
-            </ul>
-        </nav>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <h1 class="logo-text">Mi Biblioteca</h1>
+            </div>
+            
+            <nav class="nav">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Buscar libros...">
+                    <button type="submit" class="search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+                <a href="/admin" class="nav-link">Administrar Libros</a>
+            </nav>
+        </div>
     </header>
 
-    <body>
-        <h2>Bienvenido a Mi Biblioteca</h2>
-        <p>Aquí puedes encontrar una colección de libros para disfrutar.</p>
+    <section class="hero">
+        <div class="hero-content">
+            <h2 class="hero-title">Bienvenido a tu Biblioteca Personal</h2>
+            <p class="hero-subtitle">Explora tu colección de libros y descubre nuevas historias</p>
+        </div>
+    </section>
 
-        <main style="margin-left: 2rem; margin-right: 4rem;">
-            <h2>Libros leidos</h2>
-            <ul>
-                <?php foreach ($llibres as $llibre): ?>
-                    <!-- <div style="border: 2px solid black; padding: 2rem; display: flex; align-items: center; gap: 16px;"> -->
-                    <div class="w3-card-4 w3-margin w3-padding" style="display: inline-block; width: 200px; flex: 1 1 0; aspect-ratio: 1/1;">
-                        <li><?php // echo $llibre['titol']; ?></li>
-                    <a href="/llibre/<?php echo urlencode($llibre['titol']); ?>">
-                        <img src="<?php echo $llibre['imagen']; ?>" alt="<?php echo $llibre['titol']; ?>" style="width: 100%; height: auto;">
-                    </a>
+    <main class="main-content">
+        <div class="section-header">
+            <h2 class="section-title">Libros Leídos</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="books-grid">
+            <?php foreach ($llibres as $llibre): ?>
+                <a href="/llibre/<?php echo urlencode($llibre['titol']); ?>" class="book-card">
+                    <div class="book-image-container">
+                        <img src="<?php echo $llibre['imagen']; ?>" alt="<?php echo $llibre['titol']; ?>" class="book-image">
+                        <div class="book-overlay">
+                            <span class="view-details">Ver detalles</span>
+                        </div>
                     </div>
-                <?php endforeach; ?>
-            </ul>
-        </main>
-    </body>
+                    <div class="book-info">
+                        <h3 class="book-title"><?php echo $llibre['titol']; ?></h3>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Mi Biblioteca Personal. Todos los derechos reservados.</p>
+    </footer>
 </body>
 
 </html>

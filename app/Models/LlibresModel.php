@@ -12,7 +12,7 @@ class LlibresModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['titol', 'autor', 'spicy','ISBN', 'estat', 'prioritat', 'data_inici', 'data_fi', 'comprat', 'id_genere'];
+    protected $allowedFields    = ['titol', 'autor', 'imagen', 'sinopsis', 'spicy','ISBN', 'estat', 'prioritat', 'data_inici', 'data_fi', 'comprat', 'id_genere'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
