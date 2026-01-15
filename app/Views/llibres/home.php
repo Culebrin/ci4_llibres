@@ -21,13 +21,21 @@
             
             <nav class="nav">
                 <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Buscar libros...">
+                    <form action="/search" method="GET" class="search-form">
+                        <input type="text" name="search" placeholder="Buscar libros...">
+                        <button type="submit" class="search-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                    </form>
+                    <!-- <input type="text" class="search-input" placeholder="Buscar libros...">
                     <button type="submit" class="search-btn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.35-4.35"></path>
                         </svg>
-                    </button>
+                    </button> -->
                 </div>
                 <a href="/admin" class="nav-link">Administrar Libros</a>
             </nav>

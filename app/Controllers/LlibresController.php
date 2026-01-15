@@ -94,4 +94,18 @@ class LlibresController extends BaseController
 
         return view('llibres/info', $data);
     }
+
+    public function search(){
+        $searchText = $this->request->getGet('search');
+
+        $model = new LlibresModel();
+        $results = $model->searchBooks($searchText);
+
+        $data = [
+            'llibres' => $results,
+            'searchQuery' => $searchText,
+        ];
+
+        return view('llibres/home', $data);
+    }
 }
