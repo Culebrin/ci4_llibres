@@ -65,7 +65,7 @@ class LlibresController extends BaseController
             'estat' => ['name' => 'estat', 'type' => KpaCrud::DROPDOWN_FIELD_TYPE, 'html_atts' => ["required"], 'options' => [0 => "pendent", 1 => "llegit", 2 => "llegint"]],
             'prioritat' => ['name' => 'prioritat', 'type' => KpaCrud::DROPDOWN_FIELD_TYPE, 'html_atts' => ["required"], 'options' => [0 => "normal", 1 => "alta", 2 => "baixa"]],
             'data_inici' => ['name' => 'data_inici', 'type' => KpaCrud::DATE_FIELD_TYPE, 'html_atts' => ["required"], 'default' => $dataActual],
-            'data_fi' => ['name' => 'data_fi', 'type' => KpaCrud::DATE_FIELD_TYPE, 'html_atts' => ["required"], 'default' => $dataActual],
+            'data_fi' => ['name' => 'data_fi', 'type' => KpaCrud::DATE_FIELD_TYPE, /*'html_atts' => ["required"],*/ 'default' => $dataActual],
             'comprat' => ['name' => 'comprat', 'type' => KpaCrud::DROPDOWN_FIELD_TYPE, 'html_atts' => ["required"], 'options' => [0 => "no", 1 => "si"]],
             // 'generes' => ['name' => 'id_genere', 'type' => KpaCrud::DROPDOWN_FIELD_TYPE, 'html_atts' => ["required"], 'options' => $options],
         ]);
@@ -107,5 +107,21 @@ class LlibresController extends BaseController
         ];
 
         return view('llibres/home', $data);
+    }
+
+    public function add_by_ISBN()
+    {
+        $model = new LlibresModel();
+
+        if ($this->request->is('post')){
+            $temp = $this->request->getPost('isbn');
+            $isbn = str_replace('-', '', $temp);    // Eliminar los - del ISBN
+
+
+        }
+
+        if ($this->request->is('get')){
+            return view('llibres/add');
+        }
     }
 }

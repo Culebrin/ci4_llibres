@@ -20,6 +20,9 @@
             </div>
             
             <nav class="nav">
+                <div class="add_book">
+                    <a href="/add_by_ISBN" class="add_book_link">Añadir Libro</a>
+                </div>
                 <div class="search-container">
                     <form action="/search" method="GET" class="search-form">
                         <input type="text" name="search" placeholder="Buscar libros...">
@@ -28,6 +31,13 @@
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
+                        <!-- TODO - Acabar de veure com i on ficar un filtre per any --> 
+                        <select name="year" class="search-year">
+                            <option value=""> Filtrar por año</option>
+                            <?php
+                                 
+                            ?>
+                        </select>
                     </form>
                     <!-- <input type="text" class="search-input" placeholder="Buscar libros...">
                     <button type="submit" class="search-btn">
@@ -37,6 +47,7 @@
                         </svg>
                     </button> -->
                 </div>
+
                 <a href="/admin" class="nav-link">Administrar Libros</a>
             </nav>
         </div>
