@@ -117,6 +117,12 @@ class LlibresController extends BaseController
             $temp = $this->request->getPost('isbn');
             $isbn = str_replace('-', '', $temp);    // Eliminar los - del ISBN
 
+            $searchBook = $model->where('ISBN', $isbn)->first();
+
+            if ($searchBook){
+                return redirect()->to('/')->with('error', 'Ya está guardado ese ISBN');
+            }
+
         $client = \Config\Services::curlrequest();
 
         // $url_base = "https://www.googleapis.com/books/v1/volumes?q=isbn:" . $isbn . "&maxResults=1&key=" . getenv('API_KEY');
@@ -125,24 +131,36 @@ class LlibresController extends BaseController
         $response = $client->get($url_base);
         // print_r($response);
         $data = json_decode($response->getBody(), true);
-        $author = $data['ISBN:' . $isbn]['authors'][0]['name'];
-        $title = $data['ISBN:' . $isbn]['title'];
-        $cover = $data['ISBN:' . $isbn]['cover']['medium'];
-        print_r($isbn);
-        echo "<br>";
-        print_r($author);
-        echo "<br>";
-        print_r($title);
-        echo "<br>";
-        print_r($cover);
+
+        if (!empty($data)){
+            $author = $data['ISBN:' . $isbn]['authors'][0]['name'];
+            $title = $data['ISBN:' . $isbn]['title'];
+            $cover = $data['ISBN:' . $isbn]['cover']['medium'];
+        } else {
+            return redirect()->to('/')->with('error', 'No se han encontrado datos');
+        }
+        
+        // print_r($isbn);
+        // echo "<br>";
+        // print_r($author);
+        // echo "<br>";
+        // print_r($title);
+        // echo "<br>";
+        // print_r($cover);
         // print_r($response);
 
         $dataToSave = [
-            'titol' =>  '$title',
-            'autor' =>  'author',
-            'imagen'    =>  '$cover',
-            
+            'titol' =>  $title,
+            'autor' =>  $author,
+            'imagen'    =>  $cover,
+            'ISBN'  =>  $isbn,
+            'estat' =>  0,
+            'prioritat' =>  '0'
         ];
+        
+        print_r($dataToSave);
+
+        $model->insert($dataToSave);
         // $info = $data['items'][0]['volumeInfo'];
         // print_r($titulo = $info['title'], $autor = $info['authors'][0]);
         }
