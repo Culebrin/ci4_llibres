@@ -117,6 +117,7 @@ class LlibresController extends BaseController
             $temp = $this->request->getPost('isbn');
             $isbn = str_replace('-', '', $temp);    // Eliminar los - del ISBN
 
+            // Verificar si existe o no algún libro con ese ISBN
             $searchBook = $model->where('ISBN', $isbn)->first();
 
             if ($searchBook){
@@ -161,6 +162,7 @@ class LlibresController extends BaseController
         print_r($dataToSave);
 
         $model->insert($dataToSave);
+        return redirect()->to('/')->with('success', 'Se ha agregado el libro');
         // $info = $data['items'][0]['volumeInfo'];
         // print_r($titulo = $info['title'], $autor = $info['authors'][0]);
         }

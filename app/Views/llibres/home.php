@@ -18,9 +18,21 @@
                 <span class="logo-icon">📚</span>
                 <h1 class="logo-text">Mi Biblioteca</h1>
             </div>
-            
+
             <nav class="nav">
                 <div class="add_book">
+
+                    <?php if (session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger">
+                            <?= session()->getFlashdata('error') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (session()->getFlashdata('success')): ?>
+                        <div class="alert alert-success">
+                            <?= session()->getFlashdata('success') ?>
+                        </div>
+                    <?php endif; ?>
                     <a href="/add_by_ISBN" class="add_book_link">Añadir Libro</a>
                 </div>
                 <div class="search-container">
@@ -31,13 +43,13 @@
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
-                        <!-- TODO - Acabar de veure com i on ficar un filtre per any --> 
-                        <select name="year" class="search-year">
-                            <option value=""> Filtrar por año</option>
-                            <?php
+                            <!-- TODO - Acabar de veure com i on ficar un filtre per any -->
+                            <select name="year" class="search-year">
+                                <option value=""> Filtrar por año</option>
+                                <?php
 
-                            ?>
-                        </select>
+                                ?>
+                            </select>
                     </form>
                     <!-- <input type="text" class="search-input" placeholder="Buscar libros...">
                     <button type="submit" class="search-btn">
