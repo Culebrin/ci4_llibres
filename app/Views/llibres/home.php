@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <title>Mi Biblioteca - Colección Personal</title>
 </head>
-    // TODO: QUITAR
+
 <body>
     <header class="header">
         <div class="header-content">
