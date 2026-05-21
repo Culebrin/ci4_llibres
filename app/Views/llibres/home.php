@@ -26,14 +26,20 @@
                         <div class="alert alert-danger">
                             <?= session()->getFlashdata('error') ?>
                         </div>
-                    <?php endif; ?>
+                    <?php endif; ?>   
 
                     <?php if (session()->getFlashdata('success')): ?>
                         <div class="alert alert-success">
                             <?= session()->getFlashdata('success') ?>
                         </div>
                     <?php endif; ?>
-                    <a href="/add_by_ISBN" class="add_book_link">Añadir Libro</a>
+                    <!-- <a href="/add_by_ISBN" class="add_book_link">Añadir Libro</a> -->
+                    <!-- Poner un boton que me abra un popup donde me pida el ISBN,
+                        una vez lo ponga, con JS verificar en local el regex del input
+                        y luego mandar la petición a la API de open library -->
+                    <!-- <button onclick="openPopup()">Añadir Libro</button> -->
+                    <button id="open-popup">Agregar libro</button>
+
                 </div>
                 <div class="search-container">
                     <form action="/search" method="GET" class="search-form">
@@ -98,6 +104,12 @@
     <footer class="footer">
         <p>&copy; 2025 Mi Biblioteca Personal. Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+        function openPopup() {
+            window.open("/add_by_ISBN", "_blank", "width=600,height=400");
+        }
+    </script>
 </body>
 
 </html>

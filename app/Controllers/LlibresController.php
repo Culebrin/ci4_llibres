@@ -37,7 +37,7 @@ class LlibresController extends BaseController
         $crud->setTable('llibres');
         $crud->setPrimaryKey('id');
 
-        $crud->setColumns(['titol', 'autor' , 'ISBN', 'estat', 'comprat']);
+        $crud->setColumns(['titol', 'autor', 'ISBN', 'estat', 'comprat']);
         $crud->orderBy('id', 'ASC');
 
         $dataActual = date('Y-m-d');
@@ -69,7 +69,7 @@ class LlibresController extends BaseController
             'comprat' => ['name' => 'comprat', 'type' => KpaCrud::DROPDOWN_FIELD_TYPE, 'html_atts' => ["required"], 'options' => [0 => "no", 1 => "si"]],
             // 'generes' => ['name' => 'id_genere', 'type' => KpaCrud::DROPDOWN_FIELD_TYPE, 'html_atts' => ["required"], 'options' => $options],
         ]);
-        
+
 
         $crud->setConfig('delete', true);
         $crud->setConfig('add', true);
@@ -95,7 +95,8 @@ class LlibresController extends BaseController
         return view('llibres/info', $data);
     }
 
-    public function search(){
+    public function search()
+    {
         $searchText = $this->request->getGet('search');
 
         $model = new LlibresModel();
@@ -113,61 +114,63 @@ class LlibresController extends BaseController
     {
         $model = new LlibresModel();
 
-        if ($this->request->is('post')){
+        if ($this->request->is('post')) {
             $temp = $this->request->getPost('isbn');
             $isbn = str_replace('-', '', $temp);    // Eliminar los - del ISBN
+
+            $action = $this->request->getPost('action');
 
             // Verificar si existe o no algún libro con ese ISBN
             $searchBook = $model->where('ISBN', $isbn)->first();
 
-            if ($searchBook){
+            if ($searchBook) {
                 return redirect()->to('/')->with('error', 'Ya está guardado ese ISBN');
             }
 
-        $client = \Config\Services::curlrequest();
+            $client = \Config\Services::curlrequest();
 
-        // $url_base = "https://www.googleapis.com/books/v1/volumes?q=isbn:" . $isbn . "&maxResults=1&key=" . getenv('API_KEY');
-        $url_base = "https://openlibrary.org/api/books?bibkeys=ISBN:" . $isbn . "&format=json&jscmd=data";
+            // $url_base = "https://www.googleapis.com/books/v1/volumes?q=isbn:" . $isbn . "&maxResults=1&key=" . getenv('API_KEY');
+            $url_base = "https://openlibrary.org/api/books?bibkeys=ISBN:" . $isbn . "&format=json&jscmd=data";
 
-        $response = $client->get($url_base);
-        // print_r($response);
-        $data = json_decode($response->getBody(), true);
+            $response = $client->get($url_base);
+            // print_r($response);
+            $data = json_decode($response->getBody(), true);
 
-        if (!empty($data)){
-            $author = $data['ISBN:' . $isbn]['authors'][0]['name'];
-            $title = $data['ISBN:' . $isbn]['title'];
-            $cover = $data['ISBN:' . $isbn]['cover']['medium'];
-        } else {
-            return redirect()->to('/')->with('error', 'No se han encontrado datos');
+            if (!empty($data)) {
+                $author = $data['ISBN:' . $isbn]['authors'][0]['name'];
+                $title = $data['ISBN:' . $isbn]['title'];
+                $cover = $data['ISBN:' . $isbn]['cover']['medium'];
+            } else {
+                return redirect()->to('/')->with('error', 'No se han encontrado datos');
+            }
+
+            // print_r($isbn);
+            // echo "<br>";
+            // print_r($author);
+            // echo "<br>";
+            // print_r($title);
+            // echo "<br>";
+            // print_r($cover);
+            // print_r($response);
+
+            $dataToSave = [
+                'titol' =>  $title,
+                'autor' =>  $author,
+                'imagen'    =>  $cover,
+                'ISBN'  =>  $isbn,
+                'estat' =>  0,
+                'prioritat' =>  '0'
+            ];
+
+            print_r($dataToSave);
+
+            $model->insert($dataToSave);
+            return redirect()->to('/')->with('success', 'Se ha agregado el libro');
+            // $info = $data['items'][0]['volumeInfo'];
+            // print_r($titulo = $info['title'], $autor = $info['authors'][0]);
         }
-        
-        // print_r($isbn);
-        // echo "<br>";
-        // print_r($author);
-        // echo "<br>";
-        // print_r($title);
-        // echo "<br>";
-        // print_r($cover);
-        // print_r($response);
 
-        $dataToSave = [
-            'titol' =>  $title,
-            'autor' =>  $author,
-            'imagen'    =>  $cover,
-            'ISBN'  =>  $isbn,
-            'estat' =>  0,
-            'prioritat' =>  '0'
-        ];
-        
-        print_r($dataToSave);
-
-        $model->insert($dataToSave);
-        return redirect()->to('/')->with('success', 'Se ha agregado el libro');
-        // $info = $data['items'][0]['volumeInfo'];
-        // print_r($titulo = $info['title'], $autor = $info['authors'][0]);
-        }
-
-        if ($this->request->is('get')){
+        if ($this->request->is('get')) {
             return view('llibres/add');
         }
     }
