@@ -26,7 +26,7 @@
                         <div class="alert alert-danger">
                             <?= session()->getFlashdata('error') ?>
                         </div>
-                    <?php endif; ?>   
+                    <?php endif; ?>
 
                     <?php if (session()->getFlashdata('success')): ?>
                         <div class="alert alert-success">
@@ -38,7 +38,8 @@
                         una vez lo ponga, con JS verificar en local el regex del input
                         y luego mandar la petición a la API de open library -->
                     <!-- <button onclick="openPopup()">Añadir Libro</button> -->
-                    <button id="open-popup">Agregar libro</button>
+                    <input type="text" id="isbn" placeholder="Introduce el ISBN">
+                    <button id="buscar">Buscar</button>
 
                 </div>
                 <div class="search-container">
@@ -105,10 +106,60 @@
         <p>&copy; 2025 Mi Biblioteca Personal. Todos los derechos reservados.</p>
     </footer>
 
+    <div id="popup-preview" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span id="close-popup" class="close-btn">&times;</span>
+
+            <div id="estado"></div>
+
+            <div id="info-libro" style="display: none;">
+                <img id="portada" src="" alt="Portada del libro">
+                <h3 id="titulo"></h3>
+                <p id="autor"></p>
+
+                <button id="guardar-libro">Guardar en Biblioteca</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function openPopup() {
-            window.open("/add_by_ISBN", "_blank", "width=600,height=400");
-        }
+        const ISBN = document.getElementById("isbn");
+        const button = document.getElementById("buscar");
+
+        const portada = document.getElementById("portada");
+        const titulo = document.getElementById("titulo");
+        const autor = document.getElementById("autor");
+
+        const preview = document.getElementById("popup-preview");
+        const estado = document.getElementById("estado");
+        const infoLibro = document.getElementById("info-libro");
+
+        button.addEventListener("click", async function() {
+            // const response = await
+            // let urlISBN = url + ISBN.value;  
+            // estado.textContent = "Buscando...";
+            let urlISBN = "https://openlibrary.org/api/books?bibkeys=ISBN:" + ISBN.value + "&format=json&jscmd=data";
+
+            const respuesta = await fetch(urlISBN);
+            // estado.textContent = "Buscando..."
+            const datos = await respuesta.json();
+
+            const claveLibro = "ISBN:" + ISBN.value;
+            if (!datos[claveLibro]) {
+                // estado.innerHTML = `<p>Ha habido un error a la hora de buscar el ISBN: ${claveLibro} </p>`;
+            } else {
+                // estado.innerHTML = `<p>Titulo: ${datos[claveLibro].title}</p> <p> Autor: ${datos[claveLibro].authors[0].name} </p>`;
+                console.log(claveLibro);
+                titulo.textContent = datos[claveLibro].title;
+                console.log(datos[claveLibro].title)
+                autor.textContent = datos[claveLibro].authors[0].name;
+                console.log(datos[claveLibro].authors[0].name)
+                portada.src = datos[claveLibro].cover["medium"];
+                preview.style.display = "block";
+                infoLibro.style.display = "block";
+            }
+
+        })
     </script>
 </body>
 
