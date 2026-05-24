@@ -50,6 +50,7 @@
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
+                        </button>
                             <!-- TODO - Acabar de veure com i on ficar un filtre per any -->
                             <select name="year" class="search-year">
                                 <option value=""> Filtrar por año</option>
@@ -165,7 +166,33 @@
 
         saveBook.addEventListener("click", function(){
             try {
-                
+                if (!titulo.textContent.trim() && autor.textContent.trim()) {
+                    throw new Error("Error al guardar el libro");
+                }else{
+                    const libro = {
+                        titol: titulo.textContent,
+                        autor: autor.textContent,
+                        imagen: portada.src,
+                        // sinopsis: sinopsis.textContent,
+                        // spicy: spicy.value,
+                        ISBN: ISBN.value,
+                        estat: 0,
+                        prioritat: 0,
+                        // data_inici: data_inici.value,
+                        // data_fi: data_fi.value,
+                        comprat: 0
+                    }
+                    console.log(libro);
+                    alert("Libro guardado correctamente");
+                    // fetch("/add_book", {
+                    //     method: "POST",
+                    //     body: JSON.stringify(libro)
+                    // })
+                    // .then(response => response.json())
+                    // .then(data => {
+                    //     console.log(data);
+                    // })
+                }
             } catch (error) {
                 
             }
