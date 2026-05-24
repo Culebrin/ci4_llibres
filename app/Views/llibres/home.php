@@ -134,6 +134,8 @@
         const estado = document.getElementById("estado");
         const infoLibro = document.getElementById("info-libro");
 
+        const saveBook = document.getElementById("guardar-libro");
+
         button.addEventListener("click", async function() {
             // const response = await
             // let urlISBN = url + ISBN.value;  
@@ -159,6 +161,14 @@
                 infoLibro.style.display = "block";
             }
 
+        })
+
+        saveBook.addEventListener("click", function(){
+            try {
+                
+            } catch (error) {
+                
+            }
         })
     </script>
 </body>
