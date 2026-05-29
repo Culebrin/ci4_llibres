@@ -119,7 +119,7 @@
                 <h3 id="titulo"></h3>
                 <p id="autor"></p>
 
-                <button id="guardar-libro">Guardar en Biblioteca</button>
+                <button id="guardar-libro" onclick="saveBook()">Guardar en Biblioteca</button>
             </div>
         </div>
     </div>
@@ -157,15 +157,28 @@
             } else {
                 // estado.innerHTML = `<p>Titulo: ${datos[claveLibro].title}</p> <p> Autor: ${datos[claveLibro].authors[0].name} </p>`;
                 console.log(claveLibro);
-                titulo.textContent = datos[claveLibro].title;
+                if (datos[claveLibro].title){
+                    titulo.textContent = datos[claveLibro].title;
+                } else {
+                    titulo.textContent = "No se ha encontrado el titulo";
+                }
                 console.log(datos[claveLibro].title)
-                autor.textContent = datos[claveLibro].authors[0].name;
+                // portada.src = datos[claveLibro].cover["medium"] || "No se ha encontrado la portada";
+                if (datos[claveLibro].cover && datos[claveLibro].cover.medium) {
+                    portada.src = datos[claveLibro].cover.medium;
+                } else {
+                    portada.src = "";
+                }
+                if (datos[claveLibro].authors[0].name){
+                    autor.textContent = datos[claveLibro].authors[0].name;
+                } else {
+                    autor.textContent = "No se ha encontrado el autor";
+                }
                 console.log(datos[claveLibro].authors[0].name)
-                portada.src = datos[claveLibro].cover["medium"];
+                titol.value = datos[claveLibro].title;
+                }
                 preview.style.display = "block";
                 infoLibro.style.display = "block";
-            }
-
         })
 
         saveBook.addEventListener("click", function(){
@@ -184,16 +197,17 @@
                         comprat: 0,
                         spicy: 0
                     }
-                    console.log(libro);
-                    alert("Libro guardado correctamente");
-                    // fetch("/add_book", {
-                    //     method: "POST",
-                    //     body: JSON.stringify(libro)
-                    // })
-                    // .then(response => response.json())
-                    // .then(data => {
-                    //     console.log(data);
-                    // })
+                    fetch("/add_book", {
+                        method: "POST",
+                        body: JSON.stringify(libro)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.error("Error al guardar el libro:", error);
+                    });
                 }
             } catch (error) {
                 estado.innerHTML = `<p>Error al guardar el libro: ${error.message}</p>`;

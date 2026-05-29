@@ -127,22 +127,22 @@ class LlibresController extends BaseController
                 return redirect()->to('/')->with('error', 'Ya está guardado ese ISBN');
             }
 
-            $client = \Config\Services::curlrequest();
+            // $client = \Config\Services::curlrequest();
 
-            // $url_base = "https://www.googleapis.com/books/v1/volumes?q=isbn:" . $isbn . "&maxResults=1&key=" . getenv('API_KEY');
-            $url_base = "https://openlibrary.org/api/books?bibkeys=ISBN:" . $isbn . "&format=json&jscmd=data";
+            // // $url_base = "https://www.googleapis.com/books/v1/volumes?q=isbn:" . $isbn . "&maxResults=1&key=" . getenv('API_KEY');
+            // $url_base = "https://openlibrary.org/api/books?bibkeys=ISBN:" . $isbn . "&format=json&jscmd=data";
 
-            $response = $client->get($url_base);
-            // print_r($response);
-            $data = json_decode($response->getBody(), true);
+            // $response = $client->get($url_base);
+            // // print_r($response);
+            // $data = json_decode($response->getBody(), true);
 
-            if (!empty($data)) {
-                $author = $data['ISBN:' . $isbn]['authors'][0]['name'];
-                $title = $data['ISBN:' . $isbn]['title'];
-                $cover = $data['ISBN:' . $isbn]['cover']['medium'];
-            } else {
-                return redirect()->to('/')->with('error', 'No se han encontrado datos');
-            }
+            // if (!empty($data)) {
+            //     $author = $data['ISBN:' . $isbn]['authors'][0]['name'];
+            //     $title = $data['ISBN:' . $isbn]['title'];
+            //     $cover = $data['ISBN:' . $isbn]['cover']['medium'];
+            // } else {
+            //     return redirect()->to('/')->with('error', 'No se han encontrado datos');
+            // }
 
             // print_r($isbn);
             // echo "<br>";
@@ -173,5 +173,12 @@ class LlibresController extends BaseController
         if ($this->request->is('get')) {
             return view('llibres/add');
         }
+    }
+
+    public function add_book(){
+        $model = new LlibresModel();
+        $data = $this->request->getJSON();
+        print_r($data);
+        $model->insert($data);
     }
 }
