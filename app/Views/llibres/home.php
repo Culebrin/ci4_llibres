@@ -140,6 +140,8 @@
         const saveBook = document.getElementById("guardar-libro");
 
         button.addEventListener("click", async function() {
+            prePreview.innerHTML = "";      // Para no mostrar mensajes de error anteriores
+            estado.innerHTML = "";
             // const response = await
             // let urlISBN = url + ISBN.value;  
             // estado.textContent = "Buscando...";
@@ -151,7 +153,7 @@
 
             const claveLibro = "ISBN:" + ISBN.value;
             if (!datos[claveLibro]) {
-                prePreview.innerHTML = `<p>No se ha encontrado el libro </p>`;
+                prePreview.innerHTML = `<p style="color: red;">No se ha encontrado el libro </p>`;
             } else {
                 // estado.innerHTML = `<p>Titulo: ${datos[claveLibro].title}</p> <p> Autor: ${datos[claveLibro].authors[0].name} </p>`;
                 console.log(claveLibro);
