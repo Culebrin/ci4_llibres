@@ -40,6 +40,7 @@
                     <!-- <button onclick="openPopup()">Añadir Libro</button> -->
                     <input type="text" id="isbn" placeholder="Introduce el ISBN">
                     <button id="buscar">Buscar</button>
+                    <div id="pre-preview"></div>
 
                 </div>
                 <div class="search-container">
@@ -133,6 +134,7 @@
 
         const preview = document.getElementById("popup-preview");
         const estado = document.getElementById("estado");
+        const prePreview = document.getElementById("pre-preview");
         const infoLibro = document.getElementById("info-libro");
 
         const saveBook = document.getElementById("guardar-libro");
@@ -149,7 +151,7 @@
 
             const claveLibro = "ISBN:" + ISBN.value;
             if (!datos[claveLibro]) {
-                // estado.innerHTML = `<p>Ha habido un error a la hora de buscar el ISBN: ${claveLibro} </p>`;
+                prePreview.innerHTML = `<p>No se ha encontrado el libro </p>`;
             } else {
                 // estado.innerHTML = `<p>Titulo: ${datos[claveLibro].title}</p> <p> Autor: ${datos[claveLibro].authors[0].name} </p>`;
                 console.log(claveLibro);
@@ -166,21 +168,19 @@
 
         saveBook.addEventListener("click", function(){
             try {
-                if (!titulo.textContent.trim() && autor.textContent.trim()) {
+                if (!titulo.textContent.trim() || !autor.textContent.trim()) {
                     throw new Error("Error al guardar el libro");
                 }else{
                     const libro = {
                         titol: titulo.textContent,
                         autor: autor.textContent,
                         imagen: portada.src,
-                        // sinopsis: sinopsis.textContent,
-                        // spicy: spicy.value,
+                        // sinopsis: sinopsis.textContent,  TODO: Terminar de ver como y de donde coger la sinopsis
                         ISBN: ISBN.value,
                         estat: 0,
                         prioritat: 0,
-                        // data_inici: data_inici.value,
-                        // data_fi: data_fi.value,
-                        comprat: 0
+                        comprat: 0,
+                        spicy: 0
                     }
                     console.log(libro);
                     alert("Libro guardado correctamente");
@@ -194,7 +194,7 @@
                     // })
                 }
             } catch (error) {
-                
+                estado.innerHTML = `<p>Error al guardar el libro: ${error.message}</p>`;
             }
         })
     </script>
