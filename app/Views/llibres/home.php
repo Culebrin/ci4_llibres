@@ -52,13 +52,13 @@
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
                         </button>
-                            <!-- TODO - Acabar de veure com i on ficar un filtre per any -->
-                            <select name="year" class="search-year">
-                                <option value=""> Filtrar por año</option>
-                                <?php
+                        <!-- TODO - Acabar de veure com i on ficar un filtre per any -->
+                        <select name="year" class="search-year">
+                            <option value=""> Filtrar por año</option>
+                            <?php
 
-                                ?>
-                            </select>
+                            ?>
+                        </select>
                     </form>
                     <!-- <input type="text" class="search-input" placeholder="Buscar libros...">
                     <button type="submit" class="search-btn">
@@ -140,24 +140,39 @@
         const saveBook = document.getElementById("guardar-libro");
 
         button.addEventListener("click", async function() {
-            prePreview.innerHTML = "";      // Para no mostrar mensajes de error anteriores
+            prePreview.innerHTML = ""; // Para no mostrar mensajes de error anteriores
             estado.innerHTML = "";
-            // const response = await
-            // let urlISBN = url + ISBN.value;  
-            // estado.textContent = "Buscando...";
-            let urlISBN = "https://openlibrary.org/api/books?bibkeys=ISBN:" + ISBN.value + "&format=json&jscmd=data";
+
+            // Sustituye todos los guiones (-) y espacios en blanco por una cadena vacía
+            // La 'g' indica que se aplica a todas las coincidencias, no solo a la primera 
+            let cleanISBN = ISBN.value.replace(/[-\s]/g, '');   // TODO: Pendiente ver si agrego una validación con X al final, para libros antiguos
+            let soloNumeros = /^\d+$/.test(cleanISBN); // Verifica que todos los caracteres sean dígitos (0-9) desde el inicio hasta el final  
+            let longitudValida = cleanISBN.length === 10 || cleanISBN.length === 13; 
+
+            if (!soloNumeros) {
+                prePreview.innerHTML = "<p style='color: red;'>El ISBN solo puede contener números</p>";
+                return;
+            }
+
+            if (!longitudValida) {
+                prePreview.innerHTML = "<p style='color: red;'>El ISBN debe tener 10 o 13 dígitos</p>";
+                return;
+            }
+
+            let urlISBN = "https://openlibrary.org/api/books?bibkeys=ISBN:" + cleanISBN + "&format=json&jscmd=data";
 
             const respuesta = await fetch(urlISBN);
+
             // estado.textContent = "Buscando..."
             const datos = await respuesta.json();
 
-            const claveLibro = "ISBN:" + ISBN.value;
+            const claveLibro = "ISBN:" + cleanISBN;
             if (!datos[claveLibro]) {
                 prePreview.innerHTML = `<p style="color: red;">No se ha encontrado el libro </p>`;
             } else {
                 // estado.innerHTML = `<p>Titulo: ${datos[claveLibro].title}</p> <p> Autor: ${datos[claveLibro].authors[0].name} </p>`;
-                console.log(claveLibro);
-                if (datos[claveLibro].title){
+                console.log("claveLibro: " + claveLibro);
+                if (datos[claveLibro].title) {
                     titulo.textContent = datos[claveLibro].title;
                 } else {
                     titulo.textContent = "No se ha encontrado el titulo";
@@ -169,23 +184,23 @@
                 } else {
                     portada.src = "";
                 }
-                if (datos[claveLibro].authors[0].name){
+                if (datos[claveLibro].authors[0].name) {
                     autor.textContent = datos[claveLibro].authors[0].name;
                 } else {
                     autor.textContent = "No se ha encontrado el autor";
                 }
                 console.log(datos[claveLibro].authors[0].name)
                 titol.value = datos[claveLibro].title;
-                }
-                preview.style.display = "block";
-                infoLibro.style.display = "block";
+            }
+            preview.style.display = "block";
+            infoLibro.style.display = "block";
         })
 
-        saveBook.addEventListener("click", function(){
+        saveBook.addEventListener("click", function() {
             try {
                 if (!titulo.textContent.trim() || !autor.textContent.trim()) {
                     throw new Error("Error al guardar el libro");
-                }else{
+                } else {
                     const libro = {
                         titol: titulo.textContent,
                         autor: autor.textContent,
@@ -198,16 +213,16 @@
                         spicy: 0
                     }
                     fetch("/add_book", {
-                        method: "POST",
-                        body: JSON.stringify(libro)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.error("Error al guardar el libro:", error);
-                    });
+                            method: "POST",
+                            body: JSON.stringify(libro)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                        })
+                        .catch(error => {
+                            console.error("Error al guardar el libro:", error);
+                        });
                 }
             } catch (error) {
                 estado.innerHTML = `<p>Error al guardar el libro: ${error.message}</p>`;
