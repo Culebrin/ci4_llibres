@@ -38,7 +38,8 @@
                         una vez lo ponga, con JS verificar en local el regex del input
                         y luego mandar la petición a la API de open library -->
                     <!-- <button onclick="openPopup()">Añadir Libro</button> -->
-                    <input type="text" id="isbn" placeholder="Introduce el ISBN">
+                    <input type="text" id="isbn" placeholder="Introduce el ISBN" value="9788490436516">
+                    <p>Aquí </p>
                     <button id="buscar">Buscar</button>
                     <div id="pre-preview"></div>
 
@@ -145,9 +146,9 @@
 
             // Sustituye todos los guiones (-) y espacios en blanco por una cadena vacía
             // La 'g' indica que se aplica a todas las coincidencias, no solo a la primera 
-            let cleanISBN = ISBN.value.replace(/[-\s]/g, '');   // TODO: Pendiente ver si agrego una validación con X al final, para libros antiguos
+            let cleanISBN = ISBN.value.replace(/[-\s]/g, ''); // TODO: Pendiente ver si agrego una validación con X al final, para libros antiguos
             let soloNumeros = /^\d+$/.test(cleanISBN); // Verifica que todos los caracteres sean dígitos (0-9) desde el inicio hasta el final  
-            let longitudValida = cleanISBN.length === 10 || cleanISBN.length === 13; 
+            let longitudValida = cleanISBN.length === 10 || cleanISBN.length === 13;
 
             if (!soloNumeros) {
                 prePreview.innerHTML = "<p style='color: red;'>El ISBN solo puede contener números</p>";
@@ -161,10 +162,17 @@
 
             let urlISBN = "https://openlibrary.org/api/books?bibkeys=ISBN:" + cleanISBN + "&format=json&jscmd=data";
 
-            const respuesta = await fetch(urlISBN);
+            let datos;
 
-            // estado.textContent = "Buscando..."
-            const datos = await respuesta.json();
+            try {
+                const respuesta = await fetch(urlISBN);
+
+                // estado.textContent = "Buscando..."
+                datos = await respuesta.json();
+            } catch (error) {
+                prePreview.innerHTML = `<p style="color: red;">Error al buscar el libro: ${error.message}</p>`;
+                return;
+            }
 
             const claveLibro = "ISBN:" + cleanISBN;
             if (!datos[claveLibro]) {
