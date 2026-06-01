@@ -139,13 +139,15 @@
 
         const saveBook = document.getElementById("guardar-libro");
 
+        let cleanISBN;
+
         button.addEventListener("click", async function() {
             prePreview.innerHTML = ""; // Para no mostrar mensajes de error anteriores
             estado.innerHTML = "";
 
             // Sustituye todos los guiones (-) y espacios en blanco por una cadena vacía
             // La 'g' indica que se aplica a todas las coincidencias, no solo a la primera 
-            let cleanISBN = ISBN.value.replace(/[-\s]/g, ''); // TODO: Pendiente ver si agrego una validación con X al final, para libros antiguos
+            cleanISBN = ISBN.value.replace(/[-\s]/g, ''); // TODO: Pendiente ver si agrego una validación con X al final, para libros antiguos
             let soloNumeros = /^\d+$/.test(cleanISBN); // Verifica que todos los caracteres sean dígitos (0-9) desde el inicio hasta el final  
             let longitudValida = cleanISBN.length === 10 || cleanISBN.length === 13;
 
@@ -197,7 +199,7 @@
                     autor.textContent = "No se ha encontrado el autor";
                 }
                 console.log(datos[claveLibro].authors[0].name)
-                titol.value = datos[claveLibro].title;
+                // titol.value = datos[claveLibro].title;
             }
             preview.style.display = "block";
             infoLibro.style.display = "block";
@@ -213,7 +215,7 @@
                         autor: autor.textContent,
                         imagen: portada.src,
                         // sinopsis: sinopsis.textContent,  TODO: Terminar de ver como y de donde coger la sinopsis
-                        ISBN: ISBN.value,
+                        ISBN: cleanISBN,
                         estat: 0,
                         prioritat: 0,
                         comprat: 0,
