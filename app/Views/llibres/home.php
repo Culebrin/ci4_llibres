@@ -39,7 +39,6 @@
                         y luego mandar la petición a la API de open library -->
                     <!-- <button onclick="openPopup()">Añadir Libro</button> -->
                     <input type="text" id="isbn" placeholder="Introduce el ISBN" value="9788490436516">
-                    <p>Aquí </p>
                     <button id="buscar">Buscar</button>
                     <div id="pre-preview"></div>
 
@@ -226,10 +225,12 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data);
+                            // console.log(data);
+                            estado.innerText = data.message;
                         })
                         .catch(error => {
-                            console.error("Error al guardar el libro:", error);
+                            // console.error("Error al guardar el libro:", error);
+                            estado.innerHTML = `<p>Error al guardar el libro: ${error.message}</p>`;
                         });
                 }
             } catch (error) {

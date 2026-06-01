@@ -110,6 +110,8 @@ class LlibresController extends BaseController
         return view('llibres/home', $data);
     }
 
+    /*
+    // TODO: Revisar si esta funcion es necesaria o eliminarla definitivamente
     public function add_by_ISBN()
     {
         $model = new LlibresModel();
@@ -153,32 +155,84 @@ class LlibresController extends BaseController
             // print_r($cover);
             // print_r($response);
 
-            $dataToSave = [
-                'titol' =>  $title,
-                'autor' =>  $author,
-                'imagen'    =>  $cover,
-                'ISBN'  =>  $isbn,
-                'estat' =>  0,
-                'prioritat' =>  '0'
-            ];
+            // $dataToSave = [
+            //     'titol' =>  $title,
+            //     'autor' =>  $author,
+            //     'imagen'    =>  $cover,
+            //     'ISBN'  =>  $isbn,
+            //     'estat' =>  0,
+            //     'prioritat' =>  '0'
+            // ];
 
-            print_r($dataToSave);
+            // print_r($dataToSave);
 
-            $model->insert($dataToSave);
-            return redirect()->to('/')->with('success', 'Se ha agregado el libro');
+            // $model->insert($dataToSave);
+            // return redirect()->to('/')->with('success', 'Se ha agregado el libro');
             // $info = $data['items'][0]['volumeInfo'];
             // print_r($titulo = $info['title'], $autor = $info['authors'][0]);
         }
 
-        if ($this->request->is('get')) {
-            return view('llibres/add');
-        }
     }
+    */
 
-    public function add_book(){
+    // $client = \Config\Services::curlrequest();
+
+    // // $url_base = "https://www.googleapis.com/books/v1/volumes?q=isbn:" . $isbn . "&maxResults=1&key=" . getenv('API_KEY');
+    // $url_base = "https://openlibrary.org/api/books?bibkeys=ISBN:" . $isbn . "&format=json&jscmd=data";
+
+    // $response = $client->get($url_base);
+    // // print_r($response);
+    // $data = json_decode($response->getBody(), true);
+
+    // if (!empty($data)) {
+    //     $author = $data['ISBN:' . $isbn]['authors'][0]['name'];
+    //     $title = $data['ISBN:' . $isbn]['title'];
+    //     $cover = $data['ISBN:' . $isbn]['cover']['medium'];
+    // } else {
+    //     return redirect()->to('/')->with('error', 'No se han encontrado datos');
+    // }
+
+    // print_r($isbn);
+    // echo "<br>";
+    // print_r($author);
+    // echo "<br>";
+    // print_r($title);
+    // echo "<br>";
+    // print_r($cover);
+    // print_r($response);
+
+    // $dataToSave = [
+    //     'titol' =>  $title,
+    //     'autor' =>  $author,
+    //     'imagen'    =>  $cover,
+    //     'ISBN'  =>  $isbn,
+    //     'estat' =>  0,
+    //     'prioritat' =>  '0'
+    // ];
+
+    // print_r($dataToSave);
+
+    // $model->insert($dataToSave);
+    // return redirect()->to('/')->with('success', 'Se ha agregado el libro');
+    // $info = $data['items'][0]['volumeInfo'];
+    // print_r($titulo = $info['title'], $autor = $info['authors'][0]);
+    //     }
+
+    //     if ($this->request->is('get')) {
+    //         return view('llibres/add');
+    //     }
+    // }
+
+    public function add_book()
+    {
         $model = new LlibresModel();
         $data = $this->request->getJSON();
-        print_r($data);
-        $model->insert($data);
+        // print_r($data);
+        try {
+            $model->insert($data);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['message' => 'Error al agregar el libro: ' . $e->getMessage()]);
+        }
+        return $this->response->setJSON(['message' => 'Libro agregado correctamente']);
     }
 }
