@@ -225,10 +225,20 @@
                             method: "POST",
                             body: JSON.stringify(libro)
                         })
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {     // si la respuesta no es ok, muestra el error, el cual salta dentro del catch
+                                throw new Error("Error al guardar el libro");
+                            } 
+                            return response.json();   // si es ok, convierte la respuesta en json y pasa al siguiente .then(data)  
+                        })
                         .then(data => {
                             // console.log(data);
-                            estado.innerText = data.message;
+                            // estado.innerText = data.message;
+                            prePreview.innerHTML = `<p style="color: green;">${data.message}</p>`;
+                            preview.style.display = "none";
+                            setTimeout(() => {
+                                prePreview.innerHTML = "";
+                            }, 3000);
                         })
                         .catch(error => {
                             // console.error("Error al guardar el libro:", error);
