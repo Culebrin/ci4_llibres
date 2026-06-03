@@ -226,10 +226,12 @@
                             body: JSON.stringify(libro)
                         })
                         .then(response => {
-                            if (!response.ok) {     // si la respuesta no es ok, muestra el error, el cual salta dentro del catch
-                                throw new Error("Error al guardar el libro");
-                            } 
-                            return response.json();   // si es ok, convierte la respuesta en json y pasa al siguiente .then(data)  
+                            if (!response.ok) {     // si el backend responde con error, leemos el JSON para mostrar ese mensaje de específico y lanzamos el error
+                                return response.json().then(data => {
+                                    throw new Error(data.message);
+                                })
+                            }
+                            return response.json(); // si es ok, convierte la respuesta en json y pasa al siguiente .then(data)  
                         })
                         .then(data => {
                             // console.log(data);
