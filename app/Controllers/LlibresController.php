@@ -229,31 +229,31 @@ class LlibresController extends BaseController
         $data = $this->request->getJSON();
 
         if (!$data) {
-            return $this->response->setJSON(['message' => 'No se han recibido datos']);
+            return $this->response->setStatusCode(400)->setJSON(['message' => 'No se han recibido datos']);
         }
 
         if (empty($data->titol) || empty($data->autor) || empty($data->ISBN)) {
-            return $this->response->setJSON(['message' => 'Uno de los campos está vacío']);
+            return $this->response->setStatusCode(400)->setJSON(['message' => 'Uno de los campos está vacío']);
         }
 
         $data->ISBN = str_replace(["-", " "], "", $data->ISBN);
 
         if (strlen($data->ISBN) !== 10 && strlen($data->ISBN) !== 13) {
-            return $this->response->setJSON(['message' => 'La longitud del ISBN no es correcta']);
+            return $this->response->setStatusCode(400)->setJSON(['message' => 'La longitud del ISBN no es correcta']);
         }
 
-        $verify = $model->where("isbn", $data->ISBN)->countAllResults() > 0;
+        $verify = $model->where("ISBN", $data->ISBN)->countAllResults() > 0;
 
         if ($verify) {
-            return $this->response->setJSON(['message' => 'Ya existe un libro con ese ISBN']);
+            return $this->response->setStatusCode(409)->setJSON(['message' => 'Ya existe un libro con ese ISBN']);
         }
 
         // print_r($data);
         try {
             $model->insert($data);
         } catch (\Exception $e) {
-            return $this->response->setJSON(['message' => 'Error al agregar el libro: ' . $e->getMessage()]);
+            return $this->response->setStatusCode(500)->setJSON(['message' => 'Error al agregar el libro: ' . $e->getMessage()]);
         }
-        return $this->response->setJSON(['message' => 'Libro agregado correctamente']);
+        return $this->response->setStatusCode(201)->setJSON(['message' => 'Libro agregado correctamente']);
     }
 }
