@@ -238,7 +238,7 @@
                             preview.style.display = "none";
                             setTimeout(() => {
                                 prePreview.innerHTML = "";
-                            }, 3000);
+                            }, 4000);
                         })
                         .catch(error => {
                             // console.error("Error al guardar el libro:", error);

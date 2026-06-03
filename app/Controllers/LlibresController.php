@@ -227,6 +227,27 @@ class LlibresController extends BaseController
     {
         $model = new LlibresModel();
         $data = $this->request->getJSON();
+
+        if (!$data) {
+            return $this->response->setJSON(['message' => 'No se han recibido datos']);
+        }
+
+        if (empty($data->titol) || empty($data->autor) || empty($data->ISBN)) {
+            return $this->response->setJSON(['message' => 'Uno de los campos está vacío']);
+        }
+
+        $data->ISBN = str_replace(["-", " "], "", $data->ISBN);
+
+        if (strlen($data->ISBN) !== 10 && strlen($data->ISBN) !== 13) {
+            return $this->response->setJSON(['message' => 'La longitud del ISBN no es correcta']);
+        }
+
+        $verify = $model->where("isbn", $data->ISBN)->countAllResults() > 0;
+
+        if ($verify) {
+            return $this->response->setJSON(['message' => 'Ya existe un libro con ese ISBN']);
+        }
+
         // print_r($data);
         try {
             $model->insert($data);
