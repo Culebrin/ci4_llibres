@@ -98,6 +98,7 @@ class LlibresMigration extends Migration
             ],
         ]);
         $this->forge->addPrimaryKey('id');
+        $this->forge->addUniqueKey('ISBN', 'unique_isbn');
         // $this->forge->addForeignKey('id_genere', 'generes', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('llibres');
     }
