@@ -238,6 +238,10 @@ class LlibresController extends BaseController
 
         $data->ISBN = str_replace(["-", " "], "", $data->ISBN);
 
+        if (!preg_match('/^\d+$/', $data->ISBN)) {
+            return $this->response->setStatusCode(400)->setJSON(['message' => 'El ISBN solo puede contener números']);
+        }
+
         if (strlen($data->ISBN) !== 10 && strlen($data->ISBN) !== 13) {
             return $this->response->setStatusCode(400)->setJSON(['message' => 'La longitud del ISBN no es correcta']);
         }
