@@ -15,7 +15,9 @@ class LlibresController extends BaseController
         $model = new LlibresModel();
 
         $data = [
-            'llibres' => $model->findAll(),
+            // 'llibres' => $model->findAll(),
+            'llibres' => $model->paginate(8),
+            'pager'   => $model->pager,
         ];
 
         return view('llibres/home', $data);

@@ -102,6 +102,10 @@
                 </a>
             <?php endforeach; ?>
         </div>
+
+        <?php if (isset($pager)): ?>
+            <?= $pager->links() ?>
+        <?php endif; ?>
     </main>
 
     <footer class="footer">

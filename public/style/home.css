@@ -344,6 +344,58 @@ body {
     overflow: hidden;
 }
 
+/* ===== Pagination ===== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0 auto 2rem;
+    padding: 0;
+}
+
+.pagination li {
+    display: inline-flex;
+}
+
+.pagination a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    background: var(--bg-white);
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.pagination a:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.pagination li.active a {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.pagination li.disabled a {
+    color: var(--text-light);
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 /* ===== Footer ===== */
 .footer {
     background: var(--dark-gradient);
