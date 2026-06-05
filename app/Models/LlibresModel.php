@@ -33,7 +33,17 @@ class LlibresModel extends Model
         'autor'     =>  'required',
         'ISBN'      => 'required'
     ];
-    protected $validationMessages   = [];
+    protected $validationMessages   = [
+        'titol'     => [
+            'required'  =>  'El campo titulo es obligatorio'
+        ],
+        'autor'     => [
+            'required'  =>  'El campo autor es obligatorio'
+        ],
+        'ISBN'     => [
+            'required'  =>  'El campo ISBN es obligatorio'
+        ]
+    ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 

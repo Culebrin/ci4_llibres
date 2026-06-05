@@ -226,9 +226,17 @@
                             body: JSON.stringify(libro)
                         })
                         .then(response => {
-                            if (!response.ok) {     // si el backend responde con error, leemos el JSON para mostrar ese mensaje de específico y lanzamos el error
+                            if (!response.ok) { // si el backend responde con error, leemos el JSON para mostrar ese mensaje de específico y lanzamos el error
                                 return response.json().then(data => {
-                                    throw new Error(data.message);
+
+                                    let message = data.message;
+
+                                    if (data.errors) {
+                                        // Si el backend devuelve errores de validación, los convertimos en un mensaje legible
+                                        // en vez de mostrar solo "Error de validación".
+                                        message = Object.values(data.errors).join(", ");
+                                    }
+                                    throw new Error(message);
                                 })
                             }
                             return response.json(); // si es ok, convierte la respuesta en json y pasa al siguiente .then(data)  
