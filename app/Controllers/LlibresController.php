@@ -252,9 +252,14 @@ class LlibresController extends BaseController
             return $this->response->setStatusCode(409)->setJSON(['message' => 'Ya existe un libro con ese ISBN']);
         }
 
+
         // print_r($data);
         try {
-            $model->insert($data);
+            $result = $model->insert($data);
+
+            if ($result === false) {
+                return $this->response->setStatusCode(400)->setJSON(['message' => 'Error de validación', 'errors' => $model->errors()]);
+            }
         } catch (\Exception $e) {
             return $this->response->setStatusCode(500)->setJSON(['message' => 'Error al agregar el libro: ' . $e->getMessage()]);
         }
